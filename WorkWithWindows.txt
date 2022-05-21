@@ -1,0 +1,44 @@
+package week4.day2;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
+
+public class WorkWithWindows {
+	public static void main(String[] args) {
+		//To setup driver
+		WebDriverManager.chromedriver().setup();	
+		ChromeDriver driver=new ChromeDriver();
+		//To Load URL
+		driver.get("http://www.leafground.com/pages/Window.html");
+		//To Maximize the window
+		driver.manage().window().maximize();
+		driver.findElement(By.id("home")).click();
+		driver.findElement(By.xpath("//button[text()='Open Multiple Windows']")).click();
+		Set<String> OpenedWindows = driver.getWindowHandles();
+		System.out.println(OpenedWindows.size());
+		driver.findElement(By.xpath("//button[text()='Do not close me ']")).click();
+		Set<String> Windows = driver.getWindowHandles();
+		List <String> list1 = new LinkedList<String>(Windows);
+		String FirstWindow = list1.get(0); 
+		for (int i =0; i<list1.size();i++)
+		{
+			if(list1.get(i).equals(FirstWindow))
+			{}
+			else
+			{
+				driver.switchTo().window(list1.get(i));
+				driver.close();
+			}
+		}
+
+		driver.switchTo().window(FirstWindow);
+		//driver.get("http://www.leafground.com/pages/Window.html");
+		driver.findElement(By.xpath("//button[text()='Wait for 5 seconds']")).click();
+	}
+}

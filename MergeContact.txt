@@ -1,0 +1,75 @@
+package week4.day2;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+
+import org.openqa.selenium.Alert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
+
+public class MergeContact {
+	public static void main(String[] args) throws InterruptedException {
+		//To setup driver
+		WebDriverManager.chromedriver().setup();	
+		ChromeDriver driver=new ChromeDriver();
+		//To Load URL
+		driver.get("http://leaftaps.com/opentaps/control/login");
+		//To Maximize the window
+		driver.manage().window().maximize();
+
+		driver.findElement(By.id("username")).sendKeys("Demosalesmanager");
+
+		driver.findElement(By.id("password")).sendKeys("crmsfa");
+
+		driver.findElement(By.className("decorativeSubmit")).click();
+
+		driver.findElement(By.linkText("CRM/SFA")).click();
+
+		driver.findElement(By.linkText("Contacts")).click();
+
+		driver.findElement(By.xpath("//a[text()='Merge Contacts']")).click();
+
+		driver.findElement(By.xpath("//table[@id='widget_ComboBox_partyIdFrom']/following-sibling::a")).click();
+
+		Set<String> s1 = driver.getWindowHandles();
+		//System.out.println(s1);
+		List<String> list1 = new LinkedList <String>();
+		list1.addAll(s1);
+
+		driver.switchTo().window(list1.get(1));
+		driver.manage().window().maximize();
+		Thread.sleep(3000);
+		driver.findElement(By.xpath("(//div[@class='x-grid3-cell-inner x-grid3-col-partyId']/a)[1]")).click();
+
+		driver.switchTo().window(list1.get(0));
+		Thread.sleep(3000);
+		//driver.findElement(By.xpath("table[@id='widget_ComboBox_partyIdTo']/following-sibling::a")).click();
+		driver.findElement(By.xpath("(//img[contains(@src,'/images/fieldlookup.gif')])[2]")).click();
+		Set<String> s2 = driver.getWindowHandles();
+		//System.out.println(s2);
+		List<String> list2 = new LinkedList <String>();
+		list2.addAll(s2);
+		driver.switchTo().window(list2.get(1));
+		driver.manage().window().maximize();
+		System.out.println(driver.getCurrentUrl());
+		Thread.sleep(3000);
+		driver.findElement(By.xpath("(//div[@class='x-grid3-cell-inner x-grid3-col-partyId']/a)[2]")).click();
+		driver.switchTo().window(list1.get(0));
+		driver.findElement(By.linkText("Merge")).click();
+		
+		Alert alert = driver.switchTo().alert();
+		alert.accept();
+		
+		String title = driver.getTitle();
+		if(title.equals("View Contact | opentaps CRM"))
+		{
+			System.out.println("Title matches");		
+		}
+		else
+			System.out.println("Title mismatch");
+
+		
+	}
+}

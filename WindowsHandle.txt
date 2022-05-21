@@ -1,0 +1,56 @@
+package week4.day2;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
+
+public class WindowHandle {
+	public static void main(String[] args) {
+		//To setup driver
+		WebDriverManager.chromedriver().setup();
+		ChromeDriver driver = new ChromeDriver(); 
+		//To Maximize
+		driver.manage().window().maximize();
+		//To Load URL
+		driver.get("http://www.leafground.com/pages/Window.html");
+		//To click on home
+		driver.findElement(By.id("home")).click();
+		//To get unique id from window1
+		String text1 = driver.getWindowHandle();
+		//print unique id of window1
+		System.out.println(text1);
+		//print url of window 1
+		System.out.println(driver.getCurrentUrl());
+		//print title of window 1
+		System.out.println(driver.getTitle());
+		System.out.println("******************************************");
+		//to get the set of unique id's of all window
+		Set<String> windowHandles = driver.getWindowHandles(); 
+		System.out.println(windowHandles);
+		//converting it into list
+		List<String> list1 = new ArrayList<String>(windowHandles);
+		//to get the id of window 2 using index in list
+		String text2 = list1.get(1);
+		//switching to window 2
+		driver.switchTo().window(text2);
+		//to get url, title of window 2
+		System.out.println(driver.getCurrentUrl());
+		System.out.println(driver.getTitle());
+		System.out.println("***********************************************");
+		//switching to window 1
+		//to get the id of window 1 using index in list
+		String text3 = list1.get(0);
+		driver.switchTo().window(text3);
+		//to get url, title of window 1
+		System.out.println(driver.getCurrentUrl());
+		System.out.println(driver.getTitle());
+
+
+	}
+
+}
